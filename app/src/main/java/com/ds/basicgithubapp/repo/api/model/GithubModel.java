@@ -2,7 +2,6 @@ package com.ds.basicgithubapp.repo.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GithubModel {
@@ -20,6 +19,10 @@ public class GithubModel {
     public String teamUrl;
     @SerializedName("contributors_url")
     public String contributorsUrl;
+    @SerializedName("language")
+    public String language;
+    @SerializedName("owner")
+    public OwnerModel ownerModel;
 
     public GithubModel parseApiResponse(String apiResponse) {
         try {
@@ -31,6 +34,7 @@ public class GithubModel {
             this.url = jsonObject.optString("url");
             this.teamUrl = jsonObject.optString("team_url");
             this.contributorsUrl = jsonObject.optString("contributors_url");
+            this.language = jsonObject.optString("language");
         } catch (Exception e) {
             e.printStackTrace();
         }

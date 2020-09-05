@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GithubRepoViewModel extends AndroidViewModel {
 
-    MutableLiveData<List<GithubModel>> githubRepoLiveData;
+    private MutableLiveData<List<GithubModel>> githubRepoLiveData;
 
     public GithubRepoViewModel(@NonNull Application application) {
         super(application);

@@ -1,49 +1,42 @@
 package com.ds.basicgithubapp.view;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ds.basicgithubapp.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link GithubRepoDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.bumptech.glide.Glide;
+import com.ds.basicgithubapp.R;
+import com.ds.basicgithubapp.databinding.FragmentGithubRepoDetailBinding;
+import com.ds.basicgithubapp.repo.api.model.GithubModel;
+import com.ds.basicgithubapp.viewmodel.GithubRepoViewModel;
+
 public class GithubRepoDetailFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "position";
+    private int position;
+    private GithubRepoViewModel githubRepoViewModel;
+    private FragmentGithubRepoDetailBinding fragmentGithubRepoDetailBinding;
+    private Context mContext;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public GithubRepoDetailFragment() {
-        // Required empty public constructor
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.mContext = context;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GithubRepoDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static GithubRepoDetailFragment newInstance(String param1, String param2) {
+    public static GithubRepoDetailFragment newInstance(int position) {
         GithubRepoDetailFragment fragment = new GithubRepoDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,16 +44,76 @@ public class GithubRepoDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        githubRepoViewModel = ViewModelProviders.of(getActivity()).get(GithubRepoViewModel.class);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            position = getArguments().getInt(ARG_PARAM1);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_github_repo_detail, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentGithubRepoDetailBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_github_repo_detail, container, false);
+
+        return fragmentGithubRepoDetailBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        GithubModel githubModel = githubRepoViewModel.getGithubRepoLiveData().getValue().get(position);
+        Glide.with(mContext)
+                .load(githubModel.ownerModel.avatarUrl)
+                .into(fragmentGithubRepoDetailBinding.imgAvatar);
+
+        if (!TextUtils.isEmpty(githubModel.name)) {
+            fragmentGithubRepoDetailBinding.tvName.setText(githubModel.name);
+            fragmentGithubRepoDetailBinding.tvName.setVisibility(View.VISIBLE);
+        } else {
+            fragmentGithubRepoDetailBinding.tvName.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(githubModel.fullName)) {
+            fragmentGithubRepoDetailBinding.tvFullName.setText(githubModel.fullName);
+            fragmentGithubRepoDetailBinding.tvFullName.setVisibility(View.VISIBLE);
+        } else {
+            fragmentGithubRepoDetailBinding.tvFullName.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(githubModel.description)) {
+            fragmentGithubRepoDetailBinding.tvDescription.setText(githubModel.description);
+            fragmentGithubRepoDetailBinding.tvDescription.setVisibility(View.VISIBLE);
+        } else {
+            fragmentGithubRepoDetailBinding.tvDescription.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(githubModel.language)) {
+            fragmentGithubRepoDetailBinding.tvLanguage.setText(githubModel.language);
+            fragmentGithubRepoDetailBinding.tvLanguage.setVisibility(View.VISIBLE);
+        } else {
+            fragmentGithubRepoDetailBinding.tvLanguage.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(githubModel.htmlUrl)) {
+            fragmentGithubRepoDetailBinding.tvHtmlUrl.setText(githubModel.htmlUrl);
+            fragmentGithubRepoDetailBinding.tvHtmlUrl.setVisibility(View.VISIBLE);
+        } else {
+            fragmentGithubRepoDetailBinding.tvHtmlUrl.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(githubModel.teamUrl)) {
+            fragmentGithubRepoDetailBinding.tvTeamUrl.setText(githubModel.teamUrl);
+            fragmentGithubRepoDetailBinding.tvTeamUrl.setVisibility(View.VISIBLE);
+        } else {
+            fragmentGithubRepoDetailBinding.tvTeamUrl.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(githubModel.contributorsUrl)) {
+            fragmentGithubRepoDetailBinding.tvContributorsUrl.setText(githubModel.contributorsUrl);
+            fragmentGithubRepoDetailBinding.tvContributorsUrl.setVisibility(View.VISIBLE);
+        } else {
+            fragmentGithubRepoDetailBinding.tvContributorsUrl.setVisibility(View.GONE);
+        }
     }
 }

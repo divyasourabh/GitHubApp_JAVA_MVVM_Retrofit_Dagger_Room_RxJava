@@ -1,10 +1,7 @@
 package com.ds.basicgithubapp.repo;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.ds.basicgithubapp.repo.api.model.GithubModel;
@@ -38,8 +35,6 @@ public class NetworkUtils {
         call.enqueue(new Callback<List<GithubModel>>() {
             @Override
             public void onResponse(Call<List<GithubModel>> call, Response<List<GithubModel>> response) {
-                Log.d("Test123",response.body().toString());
-
                 githubRepoLiveData.setValue(response.body());
             }
 
