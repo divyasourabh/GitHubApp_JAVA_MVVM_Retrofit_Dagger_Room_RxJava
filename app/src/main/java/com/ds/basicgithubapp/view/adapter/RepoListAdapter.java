@@ -12,23 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ds.basicgithubapp.R;
 import com.ds.basicgithubapp.databinding.GithubRepoListItemBinding;
-import com.ds.basicgithubapp.repo.api.model.GithubModel;
+import com.ds.basicgithubapp.repo.room.GithubEntity;
 
 import java.util.List;
 
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHolder> {
 
-    protected List<GithubModel> githubModelList;
+    protected List<GithubEntity> githubModelList;
     protected Context mContext;
     private OnGitRepoClickListener onGitRepoClickListener;
 
-    public RepoListAdapter(Context context, List<GithubModel> githubModelList, OnGitRepoClickListener onGitRepoClickListener) {
+    public RepoListAdapter(Context context, List<GithubEntity> githubModelList, OnGitRepoClickListener onGitRepoClickListener) {
         this.githubModelList = githubModelList;
         mContext = context;
         this.onGitRepoClickListener = onGitRepoClickListener;
     }
 
-    public void setList(List<GithubModel> githubModelList) {
+    public void setList(List<GithubEntity> githubModelList) {
 //        this.githubModelList.clear();
         this.githubModelList.addAll(githubModelList);
         this.notifyDataSetChanged();
@@ -43,7 +43,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RepoListAdapter.ViewHolder holder, int position) {
-        GithubModel githubModel = githubModelList.get(position);
+        GithubEntity githubModel = githubModelList.get(position);
         holder.bind(githubModel, onGitRepoClickListener);
     }
 
@@ -60,10 +60,10 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
         public GithubRepoListItemBinding itemRowBinding;
         OnGitRepoClickListener onGitRepoClickListener;
 
-        public void bind(GithubModel githubModel, OnGitRepoClickListener onGitRepoClickListener) {
+        public void bind(GithubEntity githubModel, OnGitRepoClickListener onGitRepoClickListener) {
             this.onGitRepoClickListener = onGitRepoClickListener;
             Glide.with(mContext)
-                    .load(githubModel.ownerModel.avatarUrl)
+                    .load(githubModel.ownerEntity.avatarUrl)
                     .into(itemRowBinding.imgAvatar);
             itemRowBinding.tvFullName.setText(githubModel.fullName);
             itemRowBinding.tvReponame.setText(githubModel.name);

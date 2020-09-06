@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.bumptech.glide.Glide;
 import com.ds.basicgithubapp.R;
 import com.ds.basicgithubapp.databinding.FragmentGithubRepoDetailBinding;
-import com.ds.basicgithubapp.repo.api.model.GithubModel;
+import com.ds.basicgithubapp.repo.room.GithubEntity;
 import com.ds.basicgithubapp.viewmodel.GithubRepoViewModel;
 
 public class GithubRepoDetailFragment extends Fragment {
@@ -62,9 +62,9 @@ public class GithubRepoDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        GithubModel githubModel = githubRepoViewModel.getGithubRepoLiveData().getValue().get(position);
+        GithubEntity githubModel = githubRepoViewModel.getGithubRepoEntityLiveData().getValue().get(position);
         Glide.with(mContext)
-                .load(githubModel.ownerModel.avatarUrl)
+                .load(githubModel.ownerEntity.avatarUrl)
                 .into(fragmentGithubRepoDetailBinding.imgAvatar);
 
         if (!TextUtils.isEmpty(githubModel.name)) {

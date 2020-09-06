@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ds.basicgithubapp.R;
 import com.ds.basicgithubapp.databinding.FragmentGithubRepoListBinding;
-import com.ds.basicgithubapp.repo.api.model.GithubModel;
+import com.ds.basicgithubapp.repo.room.GithubEntity;
 import com.ds.basicgithubapp.view.adapter.RepoListAdapter;
 import com.ds.basicgithubapp.viewmodel.GithubRepoViewModel;
 
@@ -43,7 +43,8 @@ public class GithubRepoListFragment extends Fragment {
         if (getArguments() != null) {
         }
 
-        githubRepoViewModel.loadData();
+//        githubRepoViewModel.loadData();
+        githubRepoViewModel.loadDataFromRepoLayer();
     }
 
     @Override
@@ -72,11 +73,19 @@ public class GithubRepoListFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        githubRepoViewModel.getGithubRepoLiveData().observe(this, new Observer<List<GithubModel>>() {
+//        githubRepoViewModel.getGithubRepoLiveData().observe(this, new Observer<List<GithubModel>>() {
+//            @Override
+//            public void onChanged(List<GithubModel> githubModelList) {
+//                repoListAdapter.setList(githubModelList);
+//            }
+//        });
+
+        githubRepoViewModel.getGithubRepoEntityLiveData().observe(this, new Observer<List<GithubEntity>>() {
             @Override
-            public void onChanged(List<GithubModel> githubModelList) {
+            public void onChanged(List<GithubEntity> githubModelList) {
                 repoListAdapter.setList(githubModelList);
             }
         });
+
     }
 }
