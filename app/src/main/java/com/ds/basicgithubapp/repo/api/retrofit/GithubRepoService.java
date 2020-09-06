@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface GetRepoService {
+public interface GithubRepoService {
 
     @GET("/users/{user}/repos")
     Call<List<GithubEntity>> fetchRepos(@Path("user") String user);

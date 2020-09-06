@@ -44,7 +44,7 @@ public class GithubRepoListFragment extends Fragment {
         }
 
 //        githubRepoViewModel.loadData();
-        githubRepoViewModel.loadDataFromRepoLayer();
+        githubRepoViewModel.loadGithubRepoList();
     }
 
     @Override

@@ -11,17 +11,28 @@ import androidx.lifecycle.ViewModelProviders;
 import com.ds.basicgithubapp.R;
 import com.ds.basicgithubapp.view.adapter.RepoListAdapter;
 import com.ds.basicgithubapp.viewmodel.GithubRepoViewModel;
+import com.ds.basicgithubapp.viewmodel.ViewModelFactory;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 public class GithubActivity extends AppCompatActivity implements RepoListAdapter.OnGitRepoClickListener {
 
     GithubRepoViewModel githubRepoViewModel;
 
+    @Inject
+    ViewModelFactory viewModelFactory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        githubRepoViewModel = ViewModelProviders.of(this).get(GithubRepoViewModel.class);
+        githubRepoViewModel = ViewModelProviders.of(this,viewModelFactory).get(GithubRepoViewModel.class);
         attachFragment();
     }
 
