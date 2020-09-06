@@ -21,10 +21,9 @@ import retrofit2.Response;
 public class GithubRepository {
 
     public static String GITHUB_USERNAME = "divyasourabh";
+
     private static GithubRepository githubRepositoryInstance;
-
     private GetRepoService getRepoService;
-
     //ROOOM
     private GithubDAO githubDAO;
 
@@ -34,11 +33,19 @@ public class GithubRepository {
         return githubListLiveData;
     }
 
-    GithubRepository(Application application) {
+    private GithubRepository(Application application) {
         GithubRoomDatabase db = GithubRoomDatabase.getDatabase(application);
         githubDAO = db.githubDAO();
         githubListLiveData = githubDAO.loadGithubRepoList();
         getRepoService = RetrofitClientInstance.getRetrofitInstance().create(GetRepoService.class);
+    }
+
+    public static GithubRepository getInstance(Application application) {
+        if (githubRepositoryInstance == null) {
+            githubRepositoryInstance = new GithubRepository(application);
+        }
+
+        return githubRepositoryInstance;
     }
 
     public void insert(List<GithubEntity> githubModelList) {
@@ -53,17 +60,7 @@ public class GithubRepository {
         });
     }
 
-    public static GithubRepository getInstance(Application application) {
-        if (githubRepositoryInstance == null) {
-            githubRepositoryInstance = new GithubRepository(application);
-        }
-
-        return githubRepositoryInstance;
-    }
-
     public MutableLiveData<List<GithubEntity>> fetchRepoListFromAPI () {
-
-
         Call<List<GithubEntity>> call = getRepoService.fetchRepos(GITHUB_USERNAME);
         MutableLiveData<List<GithubEntity>> githubRepoLiveData = new MutableLiveData<>();
         call.enqueue(new Callback<List<GithubEntity>>() {
@@ -82,7 +79,6 @@ public class GithubRepository {
 
 
     public void updateDBFromAPI () {
-
         GetRepoService getRepoService = RetrofitClientInstance.getRetrofitInstance().create(GetRepoService.class);
         Call<List<GithubEntity>> call = getRepoService.fetchReposFromAPI(GITHUB_USERNAME);
         call.enqueue(new Callback<List<GithubEntity>>() {
