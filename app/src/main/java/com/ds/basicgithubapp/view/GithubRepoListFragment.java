@@ -19,13 +19,22 @@ import com.ds.basicgithubapp.databinding.FragmentGithubRepoListBinding;
 import com.ds.basicgithubapp.repo.room.GithubEntity;
 import com.ds.basicgithubapp.view.adapter.RepoListAdapter;
 import com.ds.basicgithubapp.viewmodel.GithubRepoViewModel;
+import com.ds.basicgithubapp.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
+
 public class GithubRepoListFragment extends Fragment {
 
     private GithubRepoViewModel githubRepoViewModel;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
+
     private FragmentGithubRepoListBinding fragmentGithubRepoListBinding;
     private RepoListAdapter repoListAdapter;
     private RepoListAdapter.OnGitRepoClickListener onGitRepoClickListener;
@@ -38,7 +47,9 @@ public class GithubRepoListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        githubRepoViewModel = ViewModelProviders.of(getActivity()).get(GithubRepoViewModel.class);
+        AndroidSupportInjection.inject(this);
+
+        githubRepoViewModel = ViewModelProviders.of(getActivity(),viewModelFactory).get(GithubRepoViewModel.class);
 
         if (getArguments() != null) {
         }

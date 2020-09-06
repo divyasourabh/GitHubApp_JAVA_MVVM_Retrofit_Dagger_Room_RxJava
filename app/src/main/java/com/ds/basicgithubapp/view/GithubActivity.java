@@ -16,13 +16,24 @@ import com.ds.basicgithubapp.viewmodel.ViewModelFactory;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public class GithubActivity extends AppCompatActivity implements RepoListAdapter.OnGitRepoClickListener {
+public class GithubActivity extends AppCompatActivity implements HasSupportFragmentInjector, RepoListAdapter.OnGitRepoClickListener {
 
     GithubRepoViewModel githubRepoViewModel;
 
     @Inject
     ViewModelFactory viewModelFactory;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return dispatchingAndroidInjector;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +57,10 @@ public class GithubActivity extends AppCompatActivity implements RepoListAdapter
 
     @Override
     public void onClick(int position) {
-            Log.d("Test1234","Start Repo Detail fragment");
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, GithubRepoDetailFragment.newInstance(position));
-            transaction.addToBackStack(null);
-            transaction.commit();
+        Log.d("Test1234", "Start Repo Detail fragment");
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, GithubRepoDetailFragment.newInstance(position));
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

@@ -13,6 +13,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         GithubRoomDBModule.class,
         ViewModelModule.class,
         ActivityModule.class,
+        FragmentModule.class,
         AndroidSupportInjectionModule.class
 })
 @Singleton
